@@ -1,25 +1,38 @@
-#include <iostream>
-#include <vector>
-#include <map>
+#ifndef BLOCK_H
+#define BLOCK_H
+#include "headers.h"
 
-using namespace std;
-typedef vector<vector<bool>> BlockMatrix;
+// for better block generation
+mt19937 randomGenerator{ static_cast<std::mt19937::result_type>(
+	std::chrono::steady_clock::now().time_since_epoch().count()
+) };
+uniform_int_distribution<int> distribution(0, 6);
+char toShape[7] = {'I', 'J', 'L', 'O', 'S', 'T', 'Z'};
+
+char getRandomChar() {
+    return toShape[distribution(randomGenerator)];
+}
 
 class Block {
 private:
-    static map<char, BlockMatrix> getBlockMatrix;
+    static map<char, vector<vector<bool>>> getBlockMatrix;
 
-    BlockMatrix block;
+    vector<vector<bool>> block;
 
 public:
-    Block(char c) : block(getBlockMatrix[c]) {}
+    Block() : block(getBlockMatrix[getRandomChar()]) {}
 
-    void rotateLeft();
-    void rotateRight();
-    void print();
+    int getSize();
+    const vector<vector<bool>>& getBlock();
+    vector<bool>& operator [] (int n);
+
+    void leftRotate();
+    void rightRotate();
+    
+    void print();   
 };
 
-map<char, BlockMatrix> Block::getBlockMatrix = {
+map<char, vector<vector<bool>>> Block::getBlockMatrix = {
     {'I', {{0, 0, 0, 0}, {1, 1, 1, 1}, {0, 0, 0, 0}, {0, 0, 0, 0}}},
     {'J', {{1, 0, 0}, {1, 1, 1}, {0, 0, 0}}},
     {'L', {{0, 0, 1}, {1, 1, 1}, {0, 0, 0}}},
@@ -29,42 +42,4 @@ map<char, BlockMatrix> Block::getBlockMatrix = {
     {'Z', {{1, 1, 0}, {0, 1, 1}, {0, 0, 0}}}
 };
 
-void Block::rotateLeft() {
-    int n = block.size();
-    for (int i = 0; i < n; i++) {
-        for (int j = i + 1; j < n; j++) {
-            swap(block[i][j], block[j][i]);
-        }
-    }
-
-    for (int i = 0; i < n / 2; i++) {
-        for (int j = 0; j < n; j++) {
-            swap(block[i][j], block[n - 1 - i][j]);
-        }
-    }
-}
-
-void Block::rotateRight() {
-    int n = block.size();
-    for (int i = 0; i < n; i++) {
-        for (int j = i + 1; j < n; j++) {
-            swap(block[i][j], block[j][i]);
-        }
-    }
-
-    for (int j = 0; j < n / 2; j++) {
-        for (int i = 0; i < n; i++) {
-            swap(block[i][j], block[i][n - 1 - j]);
-        }
-    }
-}
-
-void Block::print() {
-    for (const auto& row : block) {
-        for (bool value : row) {
-            cout << value;
-        }
-        cout << endl;
-    }
-    cout << endl;
-}
+#endif

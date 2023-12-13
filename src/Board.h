@@ -13,6 +13,7 @@ private:
 
     Block curBlock;
     pair<int, int> curBlockCoord;
+    Block nextBlock;
 
 public:
     Board(int n = 10, int m = 20);
@@ -20,6 +21,7 @@ public:
     int getLevel() { return int(level); }
     const vector<vector<bool>>& getBoard() { return board; }
     const vector<vector<bool>>& getCurBlock() { return curBlock.getBlock(); }
+    const vector<vector<bool>>& getNextBlock() { return nextBlock.getBlock(); }
     long long getScore() { return score; }
     pair<int, int> getCurBlockCoord() { return curBlockCoord; }
 
@@ -28,7 +30,7 @@ public:
     void updateScore(int rowsDeleted);
 
     void clearRow();
-    void getNewBlock();
+    void getNewBlock(bool startFlag);
     void setBlockToBoard();
     void moveBlock(char command);
     void updateBoard();

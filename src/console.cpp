@@ -40,3 +40,21 @@ void drawMatrix(pair<int, int> coord, const vector<vector<bool>> &board) {
     }
 }
 
+void drawNextBlock(const vector<vector<bool>> &next, const vector<vector<bool>> &board){
+    goToXY({0, BOARD_WIDTH * 2 + 5});
+    cout << "NEXT BLOCK";
+    for (int i = 0; i < 20; i++){
+        for (int j = 0; j < 20; j++){
+            goToXY({2 + i, BOARD_WIDTH * 2 + 2 * j});
+            cout << " ";
+        }
+    }
+    for (int i = 0; i < next.size(); i++){
+        for (int j = 0; j < next[i].size(); j++){
+            if (next[i][j]){
+                goToXY({2 + i, BOARD_WIDTH * 2 + 8 + 2 * j});
+                cout << "#";
+            }
+        }
+    }
+}

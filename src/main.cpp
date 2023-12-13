@@ -5,8 +5,9 @@ void run() {
     system("cls");
     Board board;
     drawMatrix(board.getBoard());
-    board.getNewBlock();
+    board.getNewBlock(true);
     drawMatrix(board.getCurBlockCoord(), board.getCurBlock());
+    drawNextBlock(board.getNextBlock(), board.getBoard());
     auto t_start = chrono::high_resolution_clock::now();
 
     while (!board.checkGameOver()) {
@@ -26,6 +27,7 @@ void run() {
             cout << "Level: " << board.getLevel() << endl;
             cout << "Score: " << board.getScore() << endl;
             drawMatrix(board.getCurBlockCoord(), board.getCurBlock());
+            drawNextBlock(board.getNextBlock(), board.getBoard());
             board.updateBoard();
         }
     }

@@ -25,8 +25,15 @@ void Board::updateScore(int rowsDeleted) {
     if (rowsDeleted == 0) score += 1; // manually move the block down gain 1 point
 }
 
-void Board::getNewBlock() {
-    curBlock = Block();
+void Board::getNewBlock(bool startFlag) {
+    if (startFlag) {
+        curBlock = Block();
+        nextBlock = Block();
+    }
+    else {
+        curBlock = nextBlock;
+        nextBlock = Block();
+    }
     curBlockCoord = {0, (board[0].size() - curBlock.getSize())/2};
 }
 
@@ -118,7 +125,7 @@ void Board::moveBlock(char command) {
             curBlock.rightRotate();
             if(checkCollision({curBlockCoord.x, curBlockCoord.y}))
                 curBlock.leftRotate();
-        break;
+            break;
         case ' ':
             while(!checkCollision({curBlockCoord.x + 1, curBlockCoord.y}))
                 curBlockCoord.x++;
@@ -132,6 +139,6 @@ void Board::updateBoard(){
     else{
         setBlockToBoard();
         clearRow();
-        getNewBlock();
+        getNewBlock(false);
     }
 }

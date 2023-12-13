@@ -1,8 +1,28 @@
 #include "Board.h"
 
-Board::Board(int n, int m) { 
+Board::Board(int n, int m) {
     board.resize(m, vector<bool>(n, 0));
+    level = 0;
     score = 0;
+}
+
+const int Board::dropFrames[15] = {48, 43, 38, 33, 28, 23, 18, 13, 8, 6, 5, 4, 3, 2, 1};
+double Board::getDropSpeed() {
+    int spdLevel;
+    if (level <= 9) spdLevel = level;
+    else if (level <= 12) spdLevel = 10;
+    else if (level <= 15) spdLevel = 11;
+    else if (level <= 18) spdLevel = 12;
+    else if (level <= 28) spdLevel = 13;
+    else spdLevel = 14;
+
+    return double(dropFrames[spdLevel])/60.0;
+}
+
+void Board::updateScore(int rowsDeleted) {
+    int pointCoef[5] = {0, 40, 100, 300, 1200};
+    score += pointCoef[rowsDeleted]*(int(level) + 1);
+    if (rowsDeleted == 0) score += 1; // manually move the block down gain 1 point
 }
 
 void Board::getNewBlock() {
@@ -44,13 +64,14 @@ void Board::clearRow(){
     int n = BOARD_HEIGHT - 1;
     vector<bool> blankRow(BOARD_WIDTH, 0);
 
+    int rowsDeleted = 0;
     for (int i = n; i >= 0; i--) {
         int count = 0;
         for (int j = 0; j < BOARD_WIDTH; j++)
             if (board[i][j]) count++;
 
         if (count == BOARD_WIDTH) {
-            score++;
+            rowsDeleted++;
             for (int j = i; j >= 1; j--){
                 board[j] = board[j - 1];
                 board[0] = blankRow;
@@ -58,6 +79,8 @@ void Board::clearRow(){
             i++;
         }
     }
+    updateScore(rowsDeleted);
+    level += 0.1*rowsDeleted;
 }
 
 void Board::setBlockToBoard(){
@@ -69,7 +92,7 @@ void Board::setBlockToBoard(){
 }
 
 void Board::moveBlock(char command) {
-    switch(command){
+    switch(command) {
         case 'd':
             if (!checkCollision({curBlockCoord.x, curBlockCoord.y + 1})){
                 curBlockCoord.y++;
@@ -83,6 +106,7 @@ void Board::moveBlock(char command) {
         case 's':
             if (!checkCollision({curBlockCoord.x + 1, curBlockCoord.y})){
                 curBlockCoord.x++;
+                updateScore(0);
             }
             break;
         case 'j':
@@ -97,9 +121,9 @@ void Board::moveBlock(char command) {
     }
 }
 
-void Board::processBlock(){
-    if (!checkCollision({curBlockCoord.first + 1, curBlockCoord.second})){
-        curBlockCoord.first++;
+void Board::updateBoard(){
+    if (!checkCollision({curBlockCoord.x + 1, curBlockCoord.y})){
+        curBlockCoord.x++;
     }
     else{
         setBlockToBoard();

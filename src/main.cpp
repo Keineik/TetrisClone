@@ -7,21 +7,26 @@ void run() {
     drawMatrix(board.getBoard());
     board.getNewBlock();
     drawMatrix(board.getCurBlockCoord(), board.getCurBlock());
-    time_t t1 = time(0);
+    auto t_start = chrono::high_resolution_clock::now();
+
     while (!board.checkGameOver()) {
-        time_t t2 = time(0);
+        auto t_end = chrono::high_resolution_clock::now();
         if (kbhit()) {
             char key;
             key = getch();
             board.moveBlock(key);
             drawMatrix(board.getBoard());
+            cout << "Level: " << board.getLevel() << endl;
+            cout << "Score: " << board.getScore() << endl;
             drawMatrix(board.getCurBlockCoord(), board.getCurBlock());
         }
-        if (difftime(t2, t1) > 0.5){
-            t1 = t2;
+        if (chrono::duration<double>(t_end-t_start).count() > board.getDropSpeed()) {
+            t_start = t_end;
             drawMatrix(board.getBoard());
+            cout << "Level: " << board.getLevel() << endl;
+            cout << "Score: " << board.getScore() << endl;
             drawMatrix(board.getCurBlockCoord(), board.getCurBlock());
-            board.processBlock();
+            board.updateBoard();
         }
     }
 }

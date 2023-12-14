@@ -11,8 +11,6 @@
 
 using namespace std;
 
-#define x first
-#define y second
 #define BOARD_HEIGHT board.size()
 #define BOARD_WIDTH board[0].size()
 

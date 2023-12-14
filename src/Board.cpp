@@ -44,11 +44,11 @@ bool Board::checkCollision(pair<int, int> coord){
             if (curBlock[i][j] == 0) continue;
 
             // check board borders collision
-            if (j + coord.y < 0 || j + coord.y >= BOARD_WIDTH || i + coord.x >= BOARD_HEIGHT) 
+            if (j + coord.second < 0 || j + coord.second >= BOARD_WIDTH || i + coord.first >= BOARD_HEIGHT) 
                 return true;
 
             // check occupied tiles collision
-            if (board[i + coord.x][j + coord.y]) 
+            if (board[i + coord.first][j + coord.second]) 
                 return true;
         }
     }
@@ -56,7 +56,7 @@ bool Board::checkCollision(pair<int, int> coord){
 }
 
 bool Board::checkGameOver(){
-    if (curBlockCoord.x == 0 && checkCollision(curBlockCoord))
+    if (curBlockCoord.first == -1 && checkCollision(curBlockCoord))
         return true;
     for (int j = 0; j < BOARD_WIDTH; j++) {
         int count = 0;
@@ -95,40 +95,40 @@ void Board::setBlockToBoard(){
     for (int i = 0; i < n; i++)
         for (int j = 0; j < n; j++)
             if (curBlock[i][j])
-                board[i + curBlockCoord.x][j + curBlockCoord.y] = curBlock[i][j];
+                board[i + curBlockCoord.first][j + curBlockCoord.second] = curBlock[i][j];
 }
 
 void Board::moveBlock(char command) {
     switch(command) {
         case 'd':
-            if (!checkCollision({curBlockCoord.x, curBlockCoord.y + 1})){
-                curBlockCoord.y++;
+            if (!checkCollision({curBlockCoord.first, curBlockCoord.second + 1})){
+                curBlockCoord.second++;
             }
             break;
         case 'a':
-            if (!checkCollision({curBlockCoord.x, curBlockCoord.y - 1})){
-                curBlockCoord.y--;
+            if (!checkCollision({curBlockCoord.first, curBlockCoord.second - 1})){
+                curBlockCoord.second--;
             }
             break;
         case 's':
-            if (!checkCollision({curBlockCoord.x + 1, curBlockCoord.y})){
-                curBlockCoord.x++;
+            if (!checkCollision({curBlockCoord.first + 1, curBlockCoord.second})){
+                curBlockCoord.first++;
                 updateScore(0);
             }
             break;
         case 'j':
             curBlock.leftRotate();
-            if(checkCollision({curBlockCoord.x, curBlockCoord.y}))
+            if(checkCollision({curBlockCoord.first, curBlockCoord.second}))
                 curBlock.rightRotate();
             break;
         case 'k':
             curBlock.rightRotate();
-            if(checkCollision({curBlockCoord.x, curBlockCoord.y}))
+            if(checkCollision({curBlockCoord.first, curBlockCoord.second}))
                 curBlock.leftRotate();
             break;
         case ' ':
-            while(!checkCollision({curBlockCoord.x + 1, curBlockCoord.y})){
-                curBlockCoord.x++;
+            while(!checkCollision({curBlockCoord.first + 1, curBlockCoord.second})){
+                curBlockCoord.first++;
                 updateScore(0);
             }
             updateBoard();
@@ -136,8 +136,8 @@ void Board::moveBlock(char command) {
 }
 
 void Board::updateBoard(){
-    if (!checkCollision({curBlockCoord.x + 1, curBlockCoord.y})){
-        curBlockCoord.x++;
+    if (!checkCollision({curBlockCoord.first + 1, curBlockCoord.second})){
+        curBlockCoord.first++;
     }
     else{
         setBlockToBoard();

@@ -33,7 +33,7 @@ void drawMatrix(pair<int, int> coord, const vector<vector<bool>> &board) {
     for (int i = 0; i < BOARD_HEIGHT; i++) {
         for (int j = 0; j < BOARD_WIDTH; j++) {
             if (board[i][j]) {
-                goToXY({coord.x + i, 2 * (coord.y + j)});
+                goToXY({coord.first + i, 2 * (coord.second + j)});
                 cout << "#";
             }
         }

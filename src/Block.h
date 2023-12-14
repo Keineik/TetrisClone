@@ -16,30 +16,40 @@ char getRandomChar() {
 class Block {
 private:
     static map<char, vector<vector<bool>>> getBlockMatrix;
-
+    static map<char, string> blockTexture;
+    char blockname;
+    string texturePath;
     vector<vector<bool>> block;
 
 public:
-    Block() : block(getBlockMatrix[getRandomChar()]) {}
+    Block() : blockname(getRandomChar()), block(getBlockMatrix[blockname]), texturePath(blockTexture[blockname]) {}
 
     int getSize();
     const vector<vector<bool>>& getBlock();
     vector<bool>& operator [] (int n);
-
+    const string &getTexturePath();
     void leftRotate();
     void rightRotate();
     
     void print();   
 };
-
+map<char, string> Block::blockTexture = {
+    {'I', "assets/images/block01.png"},
+    {'J', "assets/images/block02.png"},
+    {'L', "assets/images/block03.png"},
+    {'O', "assets/images/block01.png"},
+    {'S', "assets/images/block02.png"},
+    {'T', "assets/images/block01.png"},
+    {'Z', "assets/images/block03.png"},
+};
 map<char, vector<vector<bool>>> Block::getBlockMatrix = {
     {'I', {{0, 0, 0, 0}, {1, 1, 1, 1}, {0, 0, 0, 0}, {0, 0, 0, 0}}},
-    {'J', {{1, 0, 0}, {1, 1, 1}, {0, 0, 0}}},
-    {'L', {{0, 0, 1}, {1, 1, 1}, {0, 0, 0}}},
-    {'O', {{1, 1}, {1, 1}}},
-    {'S', {{0, 1, 1}, {1, 1, 0}, {0, 0, 0}}},
-    {'T', {{0, 1, 0}, {1, 1, 1}, {0, 0, 0}}},
-    {'Z', {{1, 1, 0}, {0, 1, 1}, {0, 0, 0}}}
+    {'J', {{0, 0, 0}, {1, 1, 1}, {0, 0, 1}}},
+    {'L', {{0, 0, 0}, {1, 1, 1}, {1, 0, 0}}},
+    {'O', {{0,0,0,0},{0,1, 1,0}, {0,1, 1,0},{0,0,0,0}}},
+    {'S', {{0, 0, 0}, {0, 1, 1}, {1, 1, 0}}},
+    {'T', {{0, 0, 0}, {1, 1, 1}, {0, 1, 0}}},
+    {'Z', {{0, 0, 0}, {1, 1, 0}, {0, 1, 1}}}
 };
 
 #endif

@@ -26,7 +26,9 @@ void Block::leftRotate() {
         }
     }
 }
-
+ const string & Block::getTexturePath(){
+    return texturePath;
+}
 void Block::rightRotate() {
     int n = block.size();
     for (int i = 0; i < n; i++) {

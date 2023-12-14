@@ -10,7 +10,6 @@ private:
     long long score;
 
     vector<vector<bool>> board;
-
     Block curBlock;
     pair<int, int> curBlockCoord;
     Block nextBlock;
@@ -20,8 +19,8 @@ public:
 
     int getLevel() { return int(level); }
     const vector<vector<bool>>& getBoard() { return board; }
-    const vector<vector<bool>>& getCurBlock() { return curBlock.getBlock(); }
-    const vector<vector<bool>>& getNextBlock() { return nextBlock.getBlock(); }
+    const Block& getCurBlock() { return curBlock; } // Needt to change to Block&
+    const Block& getNextBlock() { return nextBlock; }
     long long getScore() { return score; }
     pair<int, int> getCurBlockCoord() { return curBlockCoord; }
 

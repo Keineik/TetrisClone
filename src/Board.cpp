@@ -127,8 +127,11 @@ void Board::moveBlock(char command) {
                 curBlock.leftRotate();
             break;
         case ' ':
-            while(!checkCollision({curBlockCoord.x + 1, curBlockCoord.y}))
+            while(!checkCollision({curBlockCoord.x + 1, curBlockCoord.y})){
                 curBlockCoord.x++;
+                updateScore(0);
+            }
+            updateBoard();
     }
 }
 

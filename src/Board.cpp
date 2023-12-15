@@ -4,6 +4,26 @@ Board::Board(int n, int m) {
     board.resize(m, vector<char>(n, '.'));
     level = 0;
     score = 0;
+    map<char, int> statistics = {
+        {'I', 0}, {'J', 0}, {'L', 0}, {'O', 0}, {'S',  0}, {'T',  0}, {'Z', 0}
+    };
+}
+
+Board::~Board() {
+    int curHighScore = 0;
+    ifstream ifs(HIGHSCORE_FILENAME);
+
+    if (ifs) {
+        string inData; ifs >> inData;
+        curHighScore = stoi(decodeString(inData));
+        ifs.close();
+    }
+
+    if (curHighScore < score) {
+        ofstream ofs(HIGHSCORE_FILENAME);
+        ofs << encodeString(to_string(score));
+        ofs.close();
+    }
 }
 
 const int Board::dropFrames[15] = {48, 43, 38, 33, 28, 23, 18, 13, 8, 6, 5, 4, 3, 2, 1};
@@ -34,7 +54,10 @@ void Board::getNewBlock(bool startFlag) {
         curBlock = nextBlock;
         nextBlock = Block();
     }
+
     curBlockCoord = {-1, (board[0].size() - curBlock.getSize())/2};
+
+    statistics[curBlock.getBlockName()]++;
 }
 
 bool Board::checkCollision(pair<int, int> coord){

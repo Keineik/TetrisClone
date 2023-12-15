@@ -11,7 +11,9 @@ vector<bool>& Block::operator [] (int row) {
 const vector<vector<bool>>& Block::getBlock() {
     return block;
 }
+
 char Block::getBlockName(){return blockname;}
+
 void Block::leftRotate() {
     int n = block.size();
     for (int i = 0; i < n; i++) {

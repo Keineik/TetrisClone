@@ -34,7 +34,7 @@ void Board::getNewBlock(bool startFlag) {
         curBlock = nextBlock;
         nextBlock = Block();
     }
-    curBlockCoord = {0, (board[0].size() - curBlock.getSize())/2};
+    curBlockCoord = {-1, (board[0].size() - curBlock.getSize())/2};
 }
 
 bool Board::checkCollision(pair<int, int> coord){
@@ -116,6 +116,7 @@ void Board::moveBlock(char command) {
                 curBlockCoord.first++;
                 updateScore(0);
             }
+            updateBoard();
             break;
         case 'j':
             curBlock.leftRotate();

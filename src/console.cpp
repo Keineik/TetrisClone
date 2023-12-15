@@ -18,11 +18,11 @@ void showConsoleCursor(bool show) {
 
 
 // for whole board draw
-void drawMatrix(const vector<vector<bool>> &board) {
+void drawMatrix(const vector<vector<char>> &board) {
     goToXY({0, 0});
     for (int i = 0; i < BOARD_HEIGHT; i++) {
         for (int j = 0; j < BOARD_WIDTH; j++) {
-            cout << ".#"[board[i][j]] << " ";
+            cout << board[i][j] << " ";
         }
         cout << "\n";
     }
@@ -40,7 +40,7 @@ void drawMatrix(pair<int, int> coord, const vector<vector<bool>> &board) {
     }
 }
 
-void drawNextBlock(const vector<vector<bool>> &next, const vector<vector<bool>> &board){
+void drawNextBlock(const vector<vector<bool>> &next, const vector<vector<char>> &board){
     goToXY({0, BOARD_WIDTH * 2 + 5});
     cout << "NEXT BLOCK";
     for (int i = 0; i < 20; i++){

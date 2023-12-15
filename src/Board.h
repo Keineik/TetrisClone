@@ -3,7 +3,7 @@
 #include "Block.cpp"
 
 class Board {
-private:
+protected:
     static const int dropFrames[15];
     
     double level;
@@ -35,7 +35,7 @@ public:
     void updateBoard();
     
     bool checkCollision(pair<int, int> coord);
-    bool checkGameOver();
+    virtual bool checkGameOver();
 };
 
 #endif

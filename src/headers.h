@@ -2,6 +2,7 @@
 #define HEADER_H
 #include <iostream>
 #include <vector>
+#include <algorithm>
 #include <map> // to map char to array representation of that char
 #include <random> // for better random block generator
 #include <chrono> // to get seed for random generator

@@ -11,7 +11,7 @@ vector<bool>& Block::operator [] (int row) {
 const vector<vector<bool>>& Block::getBlock() {
     return block;
 }
-
+char Block::getBlockName(){return blockname;}
 void Block::leftRotate() {
     int n = block.size();
     for (int i = 0; i < n; i++) {
@@ -25,9 +25,6 @@ void Block::leftRotate() {
             swap(block[i][j], block[n - 1 - i][j]);
         }
     }
-}
- const string & Block::getTexturePath(){
-    return texturePath;
 }
 void Block::rightRotate() {
     int n = block.size();

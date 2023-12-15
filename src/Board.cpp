@@ -1,7 +1,7 @@
 #include "Board.h"
 
 Board::Board(int n, int m) {
-    board.resize(m, vector<bool>(n, 0));
+    board.resize(m, vector<char>(n, '.'));
     level = 0;
     score = 0;
 }
@@ -48,7 +48,7 @@ bool Board::checkCollision(pair<int, int> coord){
                 return true;
 
             // check occupied tiles collision
-            if (board[i + coord.first][j + coord.second]) 
+            if (board[i + coord.first][j + coord.second] != '.') 
                 return true;
         }
     }
@@ -61,7 +61,7 @@ bool Board::checkGameOver(){
     for (int j = 0; j < BOARD_WIDTH; j++) {
         int count = 0;
         for (int i = 0; i < BOARD_HEIGHT; i++)
-            if (board[i][j]) count++;
+            if (board[i][j] != '.') count++;
         if (count == BOARD_HEIGHT) return true;
     }
     return false;
@@ -69,13 +69,13 @@ bool Board::checkGameOver(){
 
 void Board::clearRow(){
     int n = BOARD_HEIGHT - 1;
-    vector<bool> blankRow(BOARD_WIDTH, 0);
+    vector<char> blankRow(BOARD_WIDTH, '.');
 
     int rowsDeleted = 0;
     for (int i = n; i >= 0; i--) {
         int count = 0;
         for (int j = 0; j < BOARD_WIDTH; j++)
-            if (board[i][j]) count++;
+            if (board[i][j] != '.') count++;
 
         if (count == BOARD_WIDTH) {
             rowsDeleted++;
@@ -92,10 +92,11 @@ void Board::clearRow(){
 
 void Board::setBlockToBoard(){
     int n = curBlock.getSize();
+    char name = curBlock.getBlockName();
     for (int i = 0; i < n; i++)
         for (int j = 0; j < n; j++)
             if (curBlock[i][j])
-                board[i + curBlockCoord.first][j + curBlockCoord.second] = curBlock[i][j];
+                board[i + curBlockCoord.first][j + curBlockCoord.second] = name;
 }
 
 void Board::moveBlock(char command) {

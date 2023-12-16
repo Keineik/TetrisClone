@@ -4,6 +4,26 @@ Board::Board(int n, int m) {
     board.resize(m, vector<char>(n, '.'));
     level = 0;
     score = 0;
+    map<char, int> statistics = {
+        {'I', 0}, {'J', 0}, {'L', 0}, {'O', 0}, {'S',  0}, {'T',  0}, {'Z', 0}
+    };
+}
+
+Board::~Board() {
+    int curHighScore = 0;
+    ifstream ifs(HIGHSCORE_FILENAME);
+
+    if (ifs) {
+        string inData; ifs >> inData;
+        curHighScore = stoi(decodeString(inData));
+        ifs.close();
+    }
+
+    if (curHighScore < score) {
+        ofstream ofs(HIGHSCORE_FILENAME);
+        ofs << encodeString(to_string(score));
+        ofs.close();
+    }
 }
 
 const int Board::dropFrames[15] = {48, 43, 38, 33, 28, 23, 18, 13, 8, 6, 5, 4, 3, 2, 1};
@@ -28,15 +48,16 @@ void Board::updateScore(int rowsDeleted) {
 void Board::getNewBlock(bool startFlag) {
     if (startFlag) {
         curBlock = Block();
-        blockStatistic[curBlock.getBlockName()]++;
         nextBlock = Block();
     }
     else {
         curBlock = nextBlock;
-        blockStatistic[curBlock.getBlockName()]++;
         nextBlock = Block();
     }
+
     curBlockCoord = {-1, (board[0].size() - curBlock.getSize())/2};
+
+    statistics[curBlock.getBlockName()]++;
 }
 
 bool Board::checkCollision(pair<int, int> coord){
@@ -57,7 +78,7 @@ bool Board::checkCollision(pair<int, int> coord){
     return false;
 }
 
-bool Board::checkGameOver(){
+bool Board::checkGameOver(double elapsed){
     if (curBlockCoord.first == -1 && checkCollision(curBlockCoord))
         return true;
     for (int j = 0; j < BOARD_WIDTH; j++) {
@@ -118,6 +139,7 @@ void Board::moveBlock(char command) {
                 curBlockCoord.first++;
                 updateScore(0);
             }
+            updateBoard();
             break;
         case 'j':
             curBlock.leftRotate();

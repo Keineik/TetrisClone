@@ -10,9 +10,14 @@
 
 #include <windows.h> 
 #include <conio.h>
+#include <SFML/Graphics.hpp>
 
 using namespace std;
-
+#define BACKGROUND "assets/images/basic-field-empty-black.png"
+#define IMAGE "assets/images/"
+#define FONT "assets/fonts/tetris-2-bombliss-credits-font.ttf"
+#define WIDTH 765
+#define HEIGHT 675
 #define BOARD_HEIGHT board.size()
 #define BOARD_WIDTH board[0].size()
 
